@@ -73,6 +73,7 @@ function getWebviewContent(
     vscode.Uri.file(path.join(context.extensionPath, 'media', 'main.js'))
   );
   const nonce = getNonce();
+  const uriEncodedRegText = encodeURIComponent(regText);
   return /* html */ `<!DOCTYPE html>
   <html>
     <head>
@@ -83,9 +84,9 @@ function getWebviewContent(
 
     <script nonce="${nonce}">
       /* set the hash before regexer work  */
-      let regText = String.raw\`${regText}\`
+      let regText = '${uriEncodedRegText}'
       if (regText) {
-        window.location.hash = encodeURIComponent(regText)
+        window.location.hash = regText
         .replace(\/\\(\/g, '%28')
         .replace(\/\\)\/g, '%29');
       }

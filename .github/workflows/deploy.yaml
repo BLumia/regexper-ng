@@ -2,15 +2,29 @@ name: gh-pages publisher 🚀
 
 on:
   push:
-    tags:
-      - '*'
+    branches: ["master"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow one concurrent deployment
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+defaults:
+  run:
+    shell: bash
 
 jobs:
-  publish-gh-pages:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
           node-version: 14
           cache: 'npm'
@@ -23,7 +37,18 @@ jobs:
         env:
           NODE_ENV: production
           DIST_URL: /regexper-ng
-      - run: git config user.name "AkatQuas" && git config user.email "noreply@github.com"
-      - run: npx gh-pages --dist build --no-history --branch gh-pages --repo "https://$GH_TOKEN@github.com/AkatQuas/regexper-ng"
-        env:
-          GH_TOKEN: ${{secrets.AUTOMATION_SECRET}}
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: ./build
+  # Deployment job
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1
