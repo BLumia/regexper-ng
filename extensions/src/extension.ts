@@ -118,7 +118,7 @@ function getWebviewContent(
 
   <div class="application">
     <form id="regexp-form">
-      <textarea id="regexp-input" placeholder="Enter JavaScript-style regular expression to display (hotkey: Shift+Enter)"></textarea>
+      <textarea spellcheck="false" id="regexp-input" placeholder="Enter JavaScript-style regular expression to display (hotkey: Shift+Enter)"></textarea>
       <button type="submit">Display</button>
       <ul class="inline-list" style="pointer-events: none; opacity: 0;">
         <li class="download-svg">
