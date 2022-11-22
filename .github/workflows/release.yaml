@@ -2,20 +2,18 @@ name: Releases 📦
 
 on:
   push:
-    tags:
-      - '*'
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
           node-version: 14
           cache: 'npm'
       - run: make pack_extensions
-      - uses: ncipollo/release-action@v1
+      - uses: actions/upload-artifact@v3
         with:
-          artifacts: 'regexper-ng*.vsix'
-          token: ${{ secrets.AUTOMATION_SECRET }}
+          name: regexper-ng-vsix
+          path: regexper-ng*.vsix

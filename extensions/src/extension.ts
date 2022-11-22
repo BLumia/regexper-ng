@@ -83,8 +83,9 @@ function getWebviewContent(
 
     <script nonce="${nonce}">
       /* set the hash before regexer work  */
-      if ('${regText}') {
-        window.location.hash = encodeURIComponent('${regText}')
+      let regText = String.raw\`${regText}\`
+      if (regText) {
+        window.location.hash = encodeURIComponent(regText)
         .replace(\/\\(\/g, '%28')
         .replace(\/\\)\/g, '%29');
       }
